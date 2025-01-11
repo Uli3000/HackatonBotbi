@@ -49,7 +49,7 @@ exports.login = async (req, res) => {
       username,
     ]);
     if (rows.length === 0) {
-      return res.status(401).json({ message: "Credenciales incorrectas" });
+      return res.status(401).json({ message: "Campos incorrectos" });
     }
 
     const user = rows[0];
@@ -57,7 +57,7 @@ exports.login = async (req, res) => {
     // Comparar la contraseña ingresada con la almacenada
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      return res.status(401).json({ message: "Credenciales incorrectas" });
+      return res.status(401).json({ message: "Campos incorrectos" });
     }
 
     // Generar token JWT
