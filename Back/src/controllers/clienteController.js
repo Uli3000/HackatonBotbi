@@ -1,4 +1,5 @@
 const db = require("../config/db");
+const axios = require("axios");
 
 exports.createCliente = async (req, res) => {
   const {
@@ -22,10 +23,35 @@ exports.createCliente = async (req, res) => {
   }
 
   try {
+    // Dirección completa para la geocodificación
+    const direccionCompleta = `${calle} ${numero}, ${ciudad}, ${estado}, ${pais}, ${codigo_postal}`;
+    const accessToken = "pk.aaa2d6c63c8b369c6caf1adcfd706fb6";
+
+    // Llamar a la API de LocationIQ para obtener las coordenadas
+    const geocodingUrl = `https://us1.locationiq.com/v1/search.php`;
+    const response = await axios.get(geocodingUrl, {
+      params: {
+        key: accessToken,
+        q: direccionCompleta,
+        format: "json",
+        limit: 1,
+      },
+    });
+
+    if (response.data.length === 0) {
+      return res.status(400).json({
+        message: "No se pudieron obtener las coordenadas de la dirección.",
+      });
+    }
+
+    // Extraer latitud y longitud del resultado
+    const { lat, lon } = response.data[0];
+
+    // Insertar el cliente en la base de datos
     const query = `
       INSERT INTO clientes 
-      (nombre, apellido_paterno, apellido_materno, email, telefono, calle, numero, ciudad, estado, pais, codigo_postal) 
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      (nombre, apellido_paterno, apellido_materno, email, telefono, calle, numero, ciudad, estado, pais, codigo_postal, latitud, longitud) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
     const values = [
       nombre,
@@ -39,13 +65,19 @@ exports.createCliente = async (req, res) => {
       estado,
       pais,
       codigo_postal,
+      parseFloat(lat),
+      parseFloat(lon),
     ];
 
     await db.execute(query, values);
+
     res.status(201).json({ message: "Cliente creado exitosamente." });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Error al crear el cliente." });
+    res.status(500).json({
+      message: "Error al crear el cliente.",
+      error: error.message,
+    });
   }
 };
 
@@ -95,9 +127,55 @@ exports.updateCliente = async (req, res) => {
   } = req.body;
 
   try {
+    const [existingCliente] = await db.execute(
+      "SELECT * FROM clientes WHERE id = ?",
+      [id]
+    );
+
+    if (existingCliente.length === 0) {
+      return res.status(404).json({ message: "Cliente no encontrado." });
+    }
+
+    const cliente = existingCliente[0];
+    const direccionCambiada =
+      cliente.calle !== calle ||
+      cliente.numero !== numero ||
+      cliente.ciudad !== ciudad ||
+      cliente.estado !== estado ||
+      cliente.pais !== pais ||
+      cliente.codigo_postal !== codigo_postal;
+
+    let lat = cliente.latitud;
+    let lon = cliente.longitud;
+
+    if (direccionCambiada) {
+      const direccionCompleta = `${calle} ${numero}, ${ciudad}, ${estado}, ${pais}, ${codigo_postal}`;
+      const accessToken = "pk.aaa2d6c63c8b369c6caf1adcfd706fb6"; // Tu token de LocationIQ
+
+      const geocodingUrl = `https://us1.locationiq.com/v1/search.php`;
+      const response = await axios.get(geocodingUrl, {
+        params: {
+          key: accessToken,
+          q: direccionCompleta,
+          format: "json",
+          limit: 1,
+        },
+      });
+
+      if (response.data.length === 0) {
+        return res.status(400).json({
+          message:
+            "No se pudieron obtener las coordenadas de la nueva dirección.",
+        });
+      }
+
+      lat = parseFloat(response.data[0].lat);
+      lon = parseFloat(response.data[0].lon);
+    }
+
     const query = `
       UPDATE clientes 
-      SET nombre = ?, apellido_paterno = ?, apellido_materno = ?, email = ?, telefono = ?, calle = ?, numero = ?, ciudad = ?, estado = ?, pais = ?, codigo_postal = ? 
+      SET nombre = ?, apellido_paterno = ?, apellido_materno = ?, email = ?, telefono = ?, calle = ?, numero = ?, ciudad = ?, estado = ?, pais = ?, codigo_postal = ?, latitud = ?, longitud = ? 
       WHERE id = ?
     `;
     const values = [
@@ -112,6 +190,8 @@ exports.updateCliente = async (req, res) => {
       estado,
       pais,
       codigo_postal,
+      lat,
+      lon,
       id,
     ];
 
@@ -124,7 +204,12 @@ exports.updateCliente = async (req, res) => {
     res.status(200).json({ message: "Cliente actualizado exitosamente." });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Error al actualizar el cliente." });
+    res
+      .status(500)
+      .json({
+        message: "Error al actualizar el cliente.",
+        error: error.message,
+      });
   }
 };
 
