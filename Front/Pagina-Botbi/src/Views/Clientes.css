@@ -1,0 +1,135 @@
+.clientes-container {
+  padding: 20px;
+  background-color: #f7f6f6;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin: 20px;
+  width: 100%;
+}
+
+.clientes-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.clientes-header h1 {
+  font-size: 30px;
+  color: #333;
+  font-family: Georgia, "Times New Roman", Times, serif;
+}
+
+.create-button {
+  background-color: #575fcf;
+  border-color: transparent;
+  color: white;
+  border: none;
+  padding: 15px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  font-size: 16px;
+}
+
+.create-button:hover {
+  background-color: #4045b1;
+}
+
+.table-placeholder {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  color: #666;
+  font-size: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.clientes-container {
+  padding: 2rem;
+}
+
+.clientes-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.create-button {
+  padding: 10px 15px;
+  background-color: #0d6efd;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.create-button:hover {
+  background-color: #0a58ca;
+}
+
+.modal-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.client-form {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.client-form label {
+  text-align: left;
+  width: 100%;
+  font-size: 15px;
+}
+
+.client-form input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: center;
+}
+
+.modal-button {
+  padding: 10px;
+  width: 100%;
+  max-width: 400px;
+  border-radius: 5px;
+  border: none;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.modal-button {
+  background-color: #0d6efd;
+  color: white;
+}
+
+.modal-button:hover {
+  background-color: #0a58ca;
+}

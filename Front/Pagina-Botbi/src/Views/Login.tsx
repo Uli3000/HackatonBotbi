@@ -80,7 +80,6 @@ function Login() {
     <article>
       <section className="login">
         <img src={botbiLogo} alt="Logo" />
-        {/* <h1>Inicia sesion aqui</h1> */}
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="login-inputs">
             <InputForm
