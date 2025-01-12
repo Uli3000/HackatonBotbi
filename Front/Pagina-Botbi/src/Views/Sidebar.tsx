@@ -31,19 +31,19 @@ function Sidebar() {
         <ul>
           <li>
             <NavLink to="/home">
-              <FaHome style={{ paddingRight: "10px" }} />
+              <FaHome style={{ paddingRight: "5px" }} />
               {!isCollapsed && <span> Inicio</span>}
             </NavLink>
           </li>
           <li>
             <NavLink to="/clientes">
-              <FaPerson style={{ paddingRight: "10px" }} />
+              <FaPerson style={{ paddingRight: "5px" }} />
               {!isCollapsed && <span> Clientes</span>}
             </NavLink>
           </li>
           <li>
             <NavLink to="/home3">
-              <FaAddressBook style={{ paddingRight: "10px" }} />
+              <FaAddressBook style={{ paddingRight: "5px" }} />
               {!isCollapsed && <span> Contactos</span>}
             </NavLink>
           </li>
@@ -51,7 +51,7 @@ function Sidebar() {
         <ul className="logout">
           <li>
             <a onClick={handleLogout}>
-              <FaSignOutAlt style={{ paddingRight: "10px" }} />
+              <FaSignOutAlt style={{ paddingRight: "5px" }} />
               {!isCollapsed && <span> Cerrar Sesion</span>}
             </a>
           </li>

@@ -7,6 +7,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import InputForm from "./InputForm";
 import axios from "axios";
 import { toast, Toaster } from "sonner";
+import DataTable from "react-data-table-component";
+import { useEffect, useState } from "react";
 
 const schema = z.object({
   name: z
@@ -47,6 +49,41 @@ type FormValues = z.infer<typeof schema>;
 
 function Clientes() {
   const { setState } = useModalContext();
+
+  const [clientes, setClientes] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const columns = [
+    { name: "Nombre", selector: (row: any) => row.nombre, sortable: true },
+    { name: "Apellido Paterno", selector: (row: any) => row.apellido_paterno },
+    { name: "Apellido Materno", selector: (row: any) => row.apellido_materno },
+    { name: "Correo Electrónico", selector: (row: any) => row.email },
+    { name: "Teléfono", selector: (row: any) => row.telefono },
+    { name: "Calle", selector: (row: any) => row.calle },
+    { name: "Número", selector: (row: any) => row.numero },
+    { name: "Ciudad", selector: (row: any) => row.ciudad },
+    { name: "Estado", selector: (row: any) => row.estado },
+    { name: "País", selector: (row: any) => row.pais },
+    { name: "Código Postal", selector: (row: any) => row.codigo_postal },
+    { name: "Latitud", selector: (row: any) => row.latitud },
+    { name: "Longitud", selector: (row: any) => row.longitud },
+  ];
+
+  useEffect(() => {
+    const fetchClientes = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/api/clientes");
+        setClientes(response.data);
+      } catch (error) {
+        console.error("Error al obtener los clientes:", error);
+        toast.error("Error al obtener los clientes");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchClientes();
+  }, []);
 
   const {
     control,
@@ -209,7 +246,12 @@ function Clientes() {
       </Modal>
 
       <div className="table-placeholder">
-        <p>Espacio reservado para la tabla de clientes</p>
+        <DataTable
+          columns={columns}
+          data={clientes}
+          progressPending={loading}
+          highlightOnHover
+        />
       </div>
     </div>
   );

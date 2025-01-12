@@ -4,7 +4,7 @@
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   margin: 20px;
-  width: 100%;
+  width: 87%;
 }
 
 .clientes-header {
@@ -38,17 +38,11 @@
 }
 
 .table-placeholder {
-  background-color: white;
+  overflow-x: auto;
+  background: #fff;
   border-radius: 8px;
-  padding: 20px;
-  text-align: center;
-  color: #666;
-  font-size: 16px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  height: 300px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
 }
 
 .clientes-container {
