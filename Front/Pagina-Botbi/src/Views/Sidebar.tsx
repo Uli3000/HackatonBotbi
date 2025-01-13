@@ -1,9 +1,14 @@
 import { useState } from "react";
 import "./Sidebar.css";
 import { NavLink, useNavigate } from "react-router-dom";
-import { FaHome, FaAddressBook, FaSignOutAlt } from "react-icons/fa";
+import {
+  FaHome,
+  FaAddressBook,
+  FaSignOutAlt,
+  FaHouseUser,
+} from "react-icons/fa";
 import { toast, Toaster } from "sonner";
-import { FaPerson } from "react-icons/fa6";
+import { FaLocationDot, FaPerson } from "react-icons/fa6";
 
 function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -42,7 +47,19 @@ function Sidebar() {
             </NavLink>
           </li>
           <li>
-            <NavLink to="/home3">
+            <NavLink to="/propiedades">
+              <FaHouseUser style={{ paddingRight: "5px" }} />
+              {!isCollapsed && <span> Propiedades</span>}
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/ubicaciones">
+              <FaLocationDot style={{ paddingRight: "5px" }} />
+              {!isCollapsed && <span> Ubicaciones</span>}
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/contactos">
               <FaAddressBook style={{ paddingRight: "5px" }} />
               {!isCollapsed && <span> Contactos</span>}
             </NavLink>

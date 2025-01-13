@@ -67,6 +67,14 @@ function Clientes() {
     { name: "Código Postal", selector: (row: any) => row.codigo_postal },
     { name: "Latitud", selector: (row: any) => row.latitud },
     { name: "Longitud", selector: (row: any) => row.longitud },
+    {
+      name: "",
+      cell: (row: any) => (
+        <button onClick={() => handleDelete(row.id)} className="delete-button">
+          Eliminar
+        </button>
+      ),
+    },
   ];
 
   useEffect(() => {
@@ -143,6 +151,17 @@ function Clientes() {
       }
     }
     closeModal();
+  };
+
+  const handleDelete = async (clientId: string) => {
+    try {
+      await axios.delete(`http://localhost:3000/api/clientes/${clientId}`);
+      setClientes(clientes.filter((client: any) => client.id !== clientId));
+      toast.info("Cliente eliminado");
+    } catch (error) {
+      console.error("Error al eliminar el cliente:", error);
+      toast.error("Error al eliminar el cliente");
+    }
   };
 
   return (

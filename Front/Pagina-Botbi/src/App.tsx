@@ -6,6 +6,7 @@ import ProtectedRoute from "./Views/ProtectedRoute";
 import MainPage from "./Views/MainPage";
 import Clientes from "./Views/Clientes";
 import Sidebar from "./Views/Sidebar";
+import NotFound from "./Views/NotFound";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
                 }
               />
             </Route>
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
       </AuthProvider>
