@@ -77,19 +77,19 @@ function Clientes() {
     },
   ];
 
-  useEffect(() => {
-    const fetchClientes = async () => {
-      try {
-        const response = await axios.get("http://localhost:3000/api/clientes");
-        setClientes(response.data);
-      } catch (error) {
-        console.error("Error al obtener los clientes:", error);
-        toast.error("Error al obtener los clientes");
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchClientes = async () => {
+    try {
+      const response = await axios.get("http://localhost:3000/api/clientes");
+      setClientes(response.data);
+    } catch (error) {
+      console.error("Error al obtener los clientes:", error);
+      toast.error("Error al obtener los clientes");
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchClientes();
   }, []);
 
@@ -142,6 +142,7 @@ function Clientes() {
       });
       if (response.status === 200 || response.status === 201) {
         toast.success(response.data.message);
+        fetchClientes();
       }
     } catch (error: any) {
       if (error.response.data.message) toast.error(error.response.data.message);
